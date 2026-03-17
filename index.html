@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>RzOffc AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+:root{
+  --ink:#0b0b12;
+  --ink1:#12121e;
+  --ink2:#1a1a2a;
+  --ink3:#242436;
+  --rim:rgba(255,255,255,0.06);
+  --rim2:rgba(255,255,255,0.11);
+  --fg:#eeeef5;
+  --fg2:#9898b8;
+  --fg3:#55556e;
+  --rose:#ff4d6d;
+  --rose-g:rgba(255,77,109,0.18);
+  --rose-glow:rgba(255,77,109,0.28);
+  --gold:#ffc566;
+  --violet:#a78bfa;
+  --violet-g:rgba(167,139,250,0.12);
+}
+
+html,body{height:100%;background:var(--ink);color:var(--fg);font-family:'Sora',sans-serif;font-size:14px;line-height:1.6;overflow:hidden}
+
+/* ═══ BACKGROUND ═══════════════════════════════════ */
+#bg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.orb{position:absolute;border-radius:50%;filter:blur(90px);will-change:transform}
+.o1{width:560px;height:560px;background:radial-gradient(circle,#ff4d6d 0%,transparent 65%);opacity:.28;top:-180px;left:-120px;animation:fl1 20s ease-in-out infinite alternate}
+.o2{width:480px;height:480px;background:radial-gradient(circle,#a78bfa 0%,transparent 65%);opacity:.22;bottom:-160px;right:-100px;animation:fl2 25s ease-in-out infinite alternate}
+.o3{width:320px;height:320px;background:radial-gradient(circle,#ffc566 0%,transparent 65%);opacity:.10;top:45%;left:55%;animation:fl3 17s ease-in-out infinite alternate}
+@keyframes fl1{to{transform:translate(70px,90px) scale(1.12)}}
+@keyframes fl2{to{transform:translate(-60px,-70px) scale(1.09)}}
+@keyframes fl3{to{transform:translate(-50px,50px)}}
+.grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.018) 1px,transparent 1px);background-size:52px 52px}
+.vignette{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,transparent 40%,rgba(8,8,16,.65) 100%)}
+
+/* ═══ LAYOUT ════════════════════════════════════════ */
+#app{position:relative;z-index:1;display:flex;flex-direction:column;height:100dvh;max-width:800px;margin:0 auto}
+
+/* ═══ HEADER ════════════════════════════════════════ */
+#header{
+  flex-shrink:0;display:flex;align-items:center;gap:13px;
+  padding:15px 24px;
+  border-bottom:1px solid var(--rim);
+  background:rgba(11,11,18,.72);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+}
+.logo-wrap{position:relative;width:38px;height:38px;flex-shrink:0}
+.logo-spin{
+  position:absolute;inset:0;border-radius:11px;
+  background:conic-gradient(from 0deg,var(--rose),var(--violet),var(--gold),var(--rose));
+  animation:spin 7s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.logo-face{position:absolute;inset:2px;border-radius:9px;background:var(--ink1);display:flex;align-items:center;justify-content:center;font-size:16px}
+.hd-text{}
+.hd-name{font-family:'Playfair Display',serif;font-style:italic;font-size:19px;font-weight:400;background:linear-gradient(90deg,#fff 0%,var(--rose) 55%,var(--gold) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-.01em}
+.hd-sub{font-size:10px;color:var(--fg3);letter-spacing:.1em;text-transform:uppercase;margin-top:1px}
+.hd-right{margin-left:auto;display:flex;align-items:center;gap:8px}
+.pill{display:flex;align-items:center;gap:5px;padding:4px 11px;border-radius:30px;border:1px solid var(--rim);background:rgba(255,255,255,.025);font-size:11px;color:var(--fg3)}
+.dot-live{width:6px;height:6px;border-radius:50%;background:#22d06a;box-shadow:0 0 7px #22d06a,0 0 14px rgba(34,208,106,.4);animation:pulse 2.5s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.75)}}
+.mem-badge{display:none;align-items:center;gap:5px;padding:4px 11px;border-radius:30px;border:1px solid rgba(167,139,250,.25);background:var(--violet-g);font-size:11px;color:var(--violet)}
+.reset-btn{display:none;align-items:center;gap:4px;padding:4px 11px;border-radius:30px;border:1px solid var(--rim);background:rgba(255,255,255,.025);font-size:11px;color:var(--fg3);cursor:pointer;font-family:'Sora',sans-serif;transition:all .2s}
+.reset-btn:hover{border-color:rgba(255,77,109,.4);color:var(--rose);background:var(--rose-g)}
+
+/* ═══ MESSAGES ══════════════════════════════════════ */
+#msgs{
+  flex:1;overflow-y:auto;
+  padding:28px 24px;
+  display:flex;flex-direction:column;gap:24px;
+  scroll-behavior:smooth;
+}
+#msgs::-webkit-scrollbar{width:3px}
+#msgs::-webkit-scrollbar-thumb{background:rgba(255,255,255,.07);border-radius:3px}
+
+@keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+/* ═══ WELCOME ═══════════════════════════════════════ */
+#welcome{
+  flex:1;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;text-align:center;
+  padding:40px 20px;gap:0;
+  animation:up .7s cubic-bezier(.22,1,.36,1) both;
+}
+.wl-icon{position:relative;width:84px;height:84px;margin-bottom:26px}
+.wl-ring{position:absolute;inset:0;border-radius:26px;background:conic-gradient(from 180deg,var(--rose),var(--violet),var(--gold),var(--rose));animation:spin 4s linear infinite}
+.wl-face{position:absolute;inset:3px;border-radius:23px;background:var(--ink1);display:flex;align-items:center;justify-content:center;font-size:33px}
+.wl-h1{font-family:'Playfair Display',serif;font-size:38px;font-weight:700;letter-spacing:-.02em;line-height:1.15;margin-bottom:12px}
+.wl-h1 em{font-style:italic;font-weight:400;background:linear-gradient(90deg,var(--rose),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.wl-desc{color:var(--fg2);font-size:14px;font-weight:300;max-width:320px;line-height:1.75;margin-bottom:32px}
+.chips{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;max-width:480px}
+.chip{padding:7px 16px;border:1px solid var(--rim);border-radius:100px;background:rgba(255,255,255,.025);font-size:12px;color:var(--fg2);cursor:pointer;transition:all .2s;font-family:'Sora',sans-serif}
+.chip:hover{border-color:var(--rose);color:var(--fg);background:var(--rose-g);transform:translateY(-1px)}
+
+/* ═══ BUBBLES ═══════════════════════════════════════ */
+.row{display:flex;gap:11px;align-items:flex-start;animation:up .32s cubic-bezier(.22,1,.36,1) both;opacity:0}
+.row.user{flex-direction:row-reverse}
+.av{width:32px;height:32px;border-radius:9px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;margin-top:2px}
+.av.ai{background:linear-gradient(135deg,var(--rose),var(--violet));box-shadow:0 0 14px var(--rose-glow)}
+.av.user{background:var(--ink3);border:1px solid var(--rim);font-size:11px;color:var(--fg2);font-weight:500}
+.col{max-width:calc(100% - 44px)}
+.row.user .col{display:flex;flex-direction:column;align-items:flex-end}
+.bub{padding:12px 17px;border-radius:16px;font-size:13.5px;line-height:1.75;word-break:break-word}
+.bub.ai{background:var(--ink2);border:1px solid var(--rim);border-top-left-radius:3px}
+.bub.user{background:linear-gradient(135deg,rgba(255,77,109,.16),rgba(167,139,250,.1));border:1px solid rgba(255,77,109,.22);border-top-right-radius:3px}
+.bub strong{color:var(--gold);font-weight:500}
+.bub em{font-style:italic;color:var(--fg2)}
+.bub code{font-family:'Fira Code','Cascadia Code',monospace;font-size:12px;background:rgba(255,255,255,.07);color:var(--violet);padding:1px 6px;border-radius:4px}
+.bub br{display:block;margin:2px 0}
+.meta{margin-top:5px;font-size:10px;color:var(--fg3);letter-spacing:.03em}
+.row.user .meta{text-align:right}
+
+/* ═══ TYPING ════════════════════════════════════════ */
+.typing-row{display:flex;gap:11px;align-items:center;animation:up .28s cubic-bezier(.22,1,.36,1) both;opacity:0}
+.typing-bub{padding:13px 17px;background:var(--ink2);border:1px solid var(--rim);border-radius:16px;border-top-left-radius:3px;display:flex;gap:4px;align-items:center}
+.td{width:6px;height:6px;border-radius:50%;background:var(--fg3);animation:bounce 1.4s ease-in-out infinite}
+.td:nth-child(2){animation-delay:.18s}.td:nth-child(3){animation-delay:.36s}
+@keyframes bounce{0%,80%,100%{transform:translateY(0);opacity:.4}40%{transform:translateY(-6px);opacity:1}}
+
+/* ═══ INPUT ZONE ════════════════════════════════════ */
+#foot{
+  flex-shrink:0;
+  padding:14px 24px 20px;
+  border-top:1px solid var(--rim);
+  background:rgba(11,11,18,.78);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+}
+.box{
+  display:flex;align-items:flex-end;gap:9px;
+  background:var(--ink2);border:1px solid var(--rim);border-radius:18px;
+  padding:10px 10px 10px 17px;
+  transition:border-color .25s,box-shadow .25s;
+}
+.box:focus-within{border-color:rgba(255,77,109,.38);box-shadow:0 0 0 3px rgba(255,77,109,.07),0 0 22px rgba(255,77,109,.07)}
+textarea{
+  flex:1;background:transparent;border:none;outline:none;resize:none;
+  color:var(--fg);font-family:'Sora',sans-serif;font-size:13.5px;
+  line-height:1.6;max-height:150px;overflow-y:auto;padding:2px 0;
+}
+textarea::placeholder{color:var(--fg3);font-weight:300}
+textarea::-webkit-scrollbar{width:3px}
+textarea::-webkit-scrollbar-thumb{background:var(--rim)}
+.send{
+  width:38px;height:38px;flex-shrink:0;
+  border:none;cursor:pointer;border-radius:11px;
+  background:linear-gradient(135deg,var(--rose) 0%,#c73358 100%);
+  display:flex;align-items:center;justify-content:center;
+  transition:transform .15s,box-shadow .2s,opacity .2s;
+  box-shadow:0 4px 14px var(--rose-glow);
+}
+.send:hover:not(:disabled){transform:scale(1.06);box-shadow:0 6px 20px rgba(255,77,109,.45)}
+.send:active:not(:disabled){transform:scale(.94)}
+.send:disabled{opacity:.3;cursor:not-allowed;box-shadow:none}
+.send svg{width:16px;height:16px;fill:#fff}
+.foot-info{margin-top:8px;display:flex;justify-content:space-between;align-items:center;padding:0 3px;font-size:10px;color:var(--fg3)}
+
+/* ═══ LOADING SPINNER ═══════════════════════════════ */
+.spinner-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:32px;color:var(--fg3);font-size:12px;animation:up .3s both}
+.spinner{width:24px;height:24px;border:2px solid var(--rim);border-top-color:var(--rose);border-radius:50%;animation:spin .8s linear infinite}
+
+@media(max-width:580px){
+  #header{padding:12px 16px}
+  #msgs{padding:20px 16px}
+  #foot{padding:12px 16px 18px}
+  .wl-h1{font-size:30px}
+}
+</style>
+</head>
+<body>
+
+<div id="bg">
+  <div class="orb o1"></div>
+  <div class="orb o2"></div>
+  <div class="orb o3"></div>
+  <div class="grid"></div>
+  <div class="vignette"></div>
+</div>
+
+<div id="app">
+
+  <div id="header">
+    <div class="logo-wrap">
+      <div class="logo-spin"></div>
+      <div class="logo-face">🔥</div>
+    </div>
+    <div class="hd-text">
+      <div class="hd-name">RzOffc AI</div>
+      <div class="hd-sub">Powered by Milo-AI · by RzOffc</div>
+    </div>
+    <div class="hd-right">
+      <div class="mem-badge" id="memBadge">🧠 <span id="memNum">0</span> pesan</div>
+      <button class="reset-btn" id="resetBtn" onclick="resetChat()">🗑 Reset</button>
+      <div class="pill"><div class="dot-live"></div>Online</div>
+    </div>
+  </div>
+
+  <div id="msgs">
+    <div id="welcome">
+      <div class="wl-icon">
+        <div class="wl-ring"></div>
+        <div class="wl-face">🔥</div>
+      </div>
+      <h1 class="wl-h1">Halo, aku <em>RzOffc AI</em></h1>
+      <p class="wl-desc">Asisten cerdas dengan memori permanen — aku ingat setiap percakapan kita.</p>
+      <div class="chips" id="chipWrap">
+        <div class="chip" onclick="useChip(this)">Siapa kamu?</div>
+        <div class="chip" onclick="useChip(this)">Buatkan kode Python</div>
+        <div class="chip" onclick="useChip(this)">Jelaskan konsep AI</div>
+        <div class="chip" onclick="useChip(this)">Buat cerita pendek</div>
+        <div class="chip" onclick="useChip(this)">Tips produktivitas</div>
+        <div class="chip" onclick="useChip(this)">Terjemahkan teks</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="foot">
+    <div class="box">
+      <textarea id="inp" rows="1" maxlength="2000" placeholder="Ketik pesanmu di sini…"></textarea>
+      <button class="send" id="sendBtn" onclick="send()">
+        <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+      </button>
+    </div>
+    <div class="foot-info">
+      <span>↵ Kirim &nbsp;·&nbsp; ⇧↵ Baris baru</span>
+      <span id="cc">0 / 2000</span>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* ── state ─────────────────────────────────────────── */
+const msgsEl   = document.getElementById('msgs');
+const inpEl    = document.getElementById('inp');
+const btnEl    = document.getElementById('sendBtn');
+const ccEl     = document.getElementById('cc');
+const memBadge = document.getElementById('memBadge');
+const memNum   = document.getElementById('memNum');
+const resetBtn = document.getElementById('resetBtn');
+let welcomeEl  = document.getElementById('welcome');
+let busy       = false;
+let SESSION    = 'default';
+
+/* ── helpers ───────────────────────────────────────── */
+function hhmmss() {
+  return new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+}
+
+function md(t) {
+  return t
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g,     '<em>$1</em>')
+    .replace(/`([^`\n]+)`/g,   '<code>$1</code>')
+    .replace(/\n/g,            '<br>');
+}
+
+function setMemUI(n) {
+  if (n > 0) {
+    memNum.textContent   = n;
+    memBadge.style.display = 'flex';
+    resetBtn.style.display = 'flex';
+  } else {
+    memBadge.style.display = 'none';
+    resetBtn.style.display = 'none';
+  }
+}
+
+function scrollEnd() {
+  msgsEl.scrollTo({ top: msgsEl.scrollHeight, behavior: 'smooth' });
+}
+
+/* ── remove welcome screen ─────────────────────────── */
+function killWelcome() {
+  if (welcomeEl) { welcomeEl.remove(); welcomeEl = null; }
+}
+
+/* ── append message bubble ─────────────────────────── */
+function appendMsg(role, text) {
+  killWelcome();
+  const row  = document.createElement('div');
+  row.className = 'row ' + role;
+
+  const av = document.createElement('div');
+  av.className = 'av ' + role;
+  av.textContent = role === 'ai' ? '🔥' : 'Rz';
+
+  const col  = document.createElement('div'); col.className = 'col';
+  const bub  = document.createElement('div'); bub.className = 'bub ' + role;
+  bub.innerHTML = md(text);
+
+  const meta = document.createElement('div'); meta.className = 'meta';
+  meta.textContent = role === 'ai'
+    ? 'RzOffc AI · ' + hhmmss()
+    : 'Kamu · '     + hhmmss();
+
+  col.appendChild(bub); col.appendChild(meta);
+  row.appendChild(av);  row.appendChild(col);
+  msgsEl.appendChild(row);
+  scrollEnd();
+}
+
+/* ── typing indicator ──────────────────────────────── */
+function showTyping() {
+  const row = document.createElement('div');
+  row.id = 'typing'; row.className = 'typing-row';
+  const av  = document.createElement('div'); av.className = 'av ai'; av.textContent = '🔥';
+  const bub = document.createElement('div'); bub.className = 'typing-bub';
+  bub.innerHTML = '<div class="td"></div><div class="td"></div><div class="td"></div>';
+  row.appendChild(av); row.appendChild(bub);
+  msgsEl.appendChild(row); scrollEnd();
+}
+function hideTyping() {
+  const el = document.getElementById('typing');
+  if (el) el.remove();
+}
+
+/* ── rebuild welcome screen ────────────────────────── */
+function buildWelcome() {
+  const d = document.createElement('div');
+  d.id = 'welcome';
+  d.innerHTML = `
+    <div class="wl-icon"><div class="wl-ring"></div><div class="wl-face">🔥</div></div>
+    <h1 class="wl-h1">Halo, aku <em>RzOffc AI</em></h1>
+    <p class="wl-desc">Asisten cerdas dengan memori permanen — aku ingat setiap percakapan kita.</p>
+    <div class="chips" id="chipWrap">
+      <div class="chip" onclick="useChip(this)">Siapa kamu?</div>
+      <div class="chip" onclick="useChip(this)">Buatkan kode Python</div>
+      <div class="chip" onclick="useChip(this)">Jelaskan konsep AI</div>
+      <div class="chip" onclick="useChip(this)">Buat cerita pendek</div>
+      <div class="chip" onclick="useChip(this)">Tips produktivitas</div>
+      <div class="chip" onclick="useChip(this)">Terjemahkan teks</div>
+    </div>`;
+  return d;
+}
+
+/* ── load history from API ─────────────────────────── */
+async function loadHistory() {
+  const spin = document.createElement('div');
+  spin.className = 'spinner-wrap';
+  spin.innerHTML = '<div class="spinner"></div><span>Memuat riwayat…</span>';
+  msgsEl.innerHTML = '';
+  msgsEl.appendChild(spin);
+
+  try {
+    const r = await fetch('/api/chat?session=' + encodeURIComponent(SESSION));
+    const d = await r.json();
+    msgsEl.innerHTML = '';
+
+    if (d.ok && d.history && d.history.length > 0) {
+      d.history.forEach(m => appendMsg(m.role, m.text));
+      setMemUI(d.history.length);
+    } else {
+      welcomeEl = buildWelcome();
+      msgsEl.appendChild(welcomeEl);
+      setMemUI(0);
+    }
+  } catch {
+    msgsEl.innerHTML = '';
+    welcomeEl = buildWelcome();
+    msgsEl.appendChild(welcomeEl);
+    setMemUI(0);
+  }
+}
+
+/* ── reset chat ────────────────────────────────────── */
+async function resetChat() {
+  if (!confirm('Hapus semua riwayat? AI akan lupa percakapan ini.')) return;
+  try {
+    await fetch('/api/chat?session=' + encodeURIComponent(SESSION), { method: 'DELETE' });
+  } catch {}
+  msgsEl.innerHTML = '';
+  welcomeEl = buildWelcome();
+  msgsEl.appendChild(welcomeEl);
+  setMemUI(0);
+}
+
+/* ── chip ──────────────────────────────────────────── */
+function useChip(el) {
+  inpEl.value = el.textContent;
+  inpEl.dispatchEvent(new Event('input'));
+  send();
+}
+
+/* ── send ──────────────────────────────────────────── */
+async function send() {
+  if (busy) return;
+  const txt = inpEl.value.trim();
+  if (!txt) return;
+
+  busy = true;
+  btnEl.disabled = true;
+  inpEl.value = '';
+  inpEl.style.height = 'auto';
+  ccEl.textContent = '0 / 2000';
+
+  appendMsg('user', txt);
+  showTyping();
+
+  try {
+    const r = await fetch('/api/chat', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ message: txt, session: SESSION })
+    });
+    const d = await r.json();
+    hideTyping();
+
+    if (d.ok && d.reply) {
+      appendMsg('ai', d.reply);
+      setMemUI(d.count);
+    } else {
+      appendMsg('ai', '⚡ Terjadi kesalahan. Coba lagi ya!');
+    }
+  } catch {
+    hideTyping();
+    appendMsg('ai', '🌐 Gagal terhubung ke server. Cek koneksimu.');
+  } finally {
+    busy = false;
+    btnEl.disabled = false;
+    inpEl.focus();
+  }
+}
+
+/* ── textarea auto-resize ──────────────────────────── */
+inpEl.addEventListener('input', () => {
+  inpEl.style.height = 'auto';
+  inpEl.style.height = Math.min(inpEl.scrollHeight, 150) + 'px';
+  ccEl.textContent = inpEl.value.length + ' / 2000';
+});
+inpEl.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); }
+});
+
+/* ── on load: just show welcome (no API call yet) ───── */
+// History akan dimuat pertama kali user mengirim pesan atau bisa uncomment baris ini:
+// loadHistory();
+</script>
+</body>
+</html>
