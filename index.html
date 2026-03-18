@@ -8,28 +8,17 @@
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-
 :root{
-  --ink:#0b0b12;
-  --ink1:#12121e;
-  --ink2:#1a1a2a;
-  --ink3:#242436;
-  --rim:rgba(255,255,255,0.06);
-  --rim2:rgba(255,255,255,0.11);
-  --fg:#eeeef5;
-  --fg2:#9898b8;
-  --fg3:#55556e;
-  --rose:#ff4d6d;
-  --rose-g:rgba(255,77,109,0.18);
-  --rose-glow:rgba(255,77,109,0.28);
-  --gold:#ffc566;
-  --violet:#a78bfa;
-  --violet-g:rgba(167,139,250,0.12);
+  --ink:#0b0b12;--ink1:#12121e;--ink2:#1a1a2a;--ink3:#242436;
+  --rim:rgba(255,255,255,0.06);--rim2:rgba(255,255,255,0.11);
+  --fg:#eeeef5;--fg2:#9898b8;--fg3:#55556e;
+  --rose:#ff4d6d;--rose-g:rgba(255,77,109,0.16);--rose-glow:rgba(255,77,109,0.28);
+  --gold:#ffc566;--violet:#a78bfa;--violet-g:rgba(167,139,250,0.12);
+  --green:#4ade80;--green-g:rgba(74,222,128,0.12);
 }
-
 html,body{height:100%;background:var(--ink);color:var(--fg);font-family:'Sora',sans-serif;font-size:14px;line-height:1.6;overflow:hidden}
 
-/* ═══ BACKGROUND ═══════════════════════════════════ */
+/* BG */
 #bg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
 .orb{position:absolute;border-radius:50%;filter:blur(90px);will-change:transform}
 .o1{width:560px;height:560px;background:radial-gradient(circle,#ff4d6d 0%,transparent 65%);opacity:.28;top:-180px;left:-120px;animation:fl1 20s ease-in-out infinite alternate}
@@ -41,157 +30,159 @@ html,body{height:100%;background:var(--ink);color:var(--fg);font-family:'Sora',s
 .grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.018) 1px,transparent 1px);background-size:52px 52px}
 .vignette{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,transparent 40%,rgba(8,8,16,.65) 100%)}
 
-/* ═══ LAYOUT ════════════════════════════════════════ */
+/* LAYOUT */
 #app{position:relative;z-index:1;display:flex;flex-direction:column;height:100dvh;max-width:800px;margin:0 auto}
 
-/* ═══ HEADER ════════════════════════════════════════ */
-#header{
-  flex-shrink:0;display:flex;align-items:center;gap:13px;
-  padding:15px 24px;
-  border-bottom:1px solid var(--rim);
-  background:rgba(11,11,18,.72);
-  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-}
-.logo-wrap{position:relative;width:38px;height:38px;flex-shrink:0}
-.logo-spin{
-  position:absolute;inset:0;border-radius:11px;
-  background:conic-gradient(from 0deg,var(--rose),var(--violet),var(--gold),var(--rose));
-  animation:spin 7s linear infinite;
-}
+/* HEADER */
+#hdr{flex-shrink:0;display:flex;align-items:center;gap:13px;padding:14px 22px;border-bottom:1px solid var(--rim);background:rgba(11,11,18,.75);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+.logo-wrap{position:relative;width:36px;height:36px;flex-shrink:0}
+.logo-spin{position:absolute;inset:0;border-radius:10px;background:conic-gradient(from 0deg,var(--rose),var(--violet),var(--gold),var(--rose));animation:spin 7s linear infinite}
+.logo-face{position:absolute;inset:2px;border-radius:8px;background:var(--ink1);display:flex;align-items:center;justify-content:center;font-size:15px}
 @keyframes spin{to{transform:rotate(360deg)}}
-.logo-face{position:absolute;inset:2px;border-radius:9px;background:var(--ink1);display:flex;align-items:center;justify-content:center;font-size:16px}
-.hd-text{}
-.hd-name{font-family:'Playfair Display',serif;font-style:italic;font-size:19px;font-weight:400;background:linear-gradient(90deg,#fff 0%,var(--rose) 55%,var(--gold) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-.01em}
+.hd-name{font-family:'Playfair Display',serif;font-style:italic;font-size:18px;background:linear-gradient(90deg,#fff 0%,var(--rose) 55%,var(--gold) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .hd-sub{font-size:10px;color:var(--fg3);letter-spacing:.1em;text-transform:uppercase;margin-top:1px}
-.hd-right{margin-left:auto;display:flex;align-items:center;gap:8px}
-.pill{display:flex;align-items:center;gap:5px;padding:4px 11px;border-radius:30px;border:1px solid var(--rim);background:rgba(255,255,255,.025);font-size:11px;color:var(--fg3)}
-.dot-live{width:6px;height:6px;border-radius:50%;background:#22d06a;box-shadow:0 0 7px #22d06a,0 0 14px rgba(34,208,106,.4);animation:pulse 2.5s ease-in-out infinite}
+.hd-right{margin-left:auto;display:flex;align-items:center;gap:7px;flex-wrap:wrap;justify-content:flex-end}
+.pill{display:flex;align-items:center;gap:5px;padding:4px 10px;border-radius:30px;border:1px solid var(--rim);background:rgba(255,255,255,.025);font-size:11px;color:var(--fg3);white-space:nowrap}
+.dot-live{width:6px;height:6px;border-radius:50%;background:#22d06a;box-shadow:0 0 7px #22d06a;animation:pulse 2.5s ease-in-out infinite}
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.75)}}
-.mem-badge{display:none;align-items:center;gap:5px;padding:4px 11px;border-radius:30px;border:1px solid rgba(167,139,250,.25);background:var(--violet-g);font-size:11px;color:var(--violet)}
-.reset-btn{display:none;align-items:center;gap:4px;padding:4px 11px;border-radius:30px;border:1px solid var(--rim);background:rgba(255,255,255,.025);font-size:11px;color:var(--fg3);cursor:pointer;font-family:'Sora',sans-serif;transition:all .2s}
+.mem-badge{display:none;align-items:center;gap:5px;padding:4px 10px;border-radius:30px;border:1px solid rgba(167,139,250,.25);background:var(--violet-g);font-size:11px;color:var(--violet);white-space:nowrap}
+.reset-btn{display:none;align-items:center;padding:4px 10px;border-radius:30px;border:1px solid var(--rim);background:transparent;font-size:11px;color:var(--fg3);cursor:pointer;font-family:'Sora',sans-serif;transition:all .2s;white-space:nowrap}
 .reset-btn:hover{border-color:rgba(255,77,109,.4);color:var(--rose);background:var(--rose-g)}
 
-/* ═══ MESSAGES ══════════════════════════════════════ */
-#msgs{
-  flex:1;overflow-y:auto;
-  padding:28px 24px;
-  display:flex;flex-direction:column;gap:24px;
-  scroll-behavior:smooth;
-}
+/* MESSAGES */
+#msgs{flex:1;overflow-y:auto;padding:26px 22px;display:flex;flex-direction:column;gap:22px;scroll-behavior:smooth}
 #msgs::-webkit-scrollbar{width:3px}
 #msgs::-webkit-scrollbar-thumb{background:rgba(255,255,255,.07);border-radius:3px}
+@keyframes up{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 
-@keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
-
-/* ═══ WELCOME ═══════════════════════════════════════ */
-#welcome{
-  flex:1;display:flex;flex-direction:column;align-items:center;
-  justify-content:center;text-align:center;
-  padding:40px 20px;gap:0;
-  animation:up .7s cubic-bezier(.22,1,.36,1) both;
-}
-.wl-icon{position:relative;width:84px;height:84px;margin-bottom:26px}
-.wl-ring{position:absolute;inset:0;border-radius:26px;background:conic-gradient(from 180deg,var(--rose),var(--violet),var(--gold),var(--rose));animation:spin 4s linear infinite}
-.wl-face{position:absolute;inset:3px;border-radius:23px;background:var(--ink1);display:flex;align-items:center;justify-content:center;font-size:33px}
-.wl-h1{font-family:'Playfair Display',serif;font-size:38px;font-weight:700;letter-spacing:-.02em;line-height:1.15;margin-bottom:12px}
+/* WELCOME */
+#welcome{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px 20px;animation:up .7s cubic-bezier(.22,1,.36,1) both}
+.wl-icon{position:relative;width:78px;height:78px;margin-bottom:22px}
+.wl-ring{position:absolute;inset:0;border-radius:24px;background:conic-gradient(from 180deg,var(--rose),var(--violet),var(--gold),var(--rose));animation:spin 4s linear infinite}
+.wl-face{position:absolute;inset:3px;border-radius:21px;background:var(--ink1);display:flex;align-items:center;justify-content:center;font-size:30px}
+.wl-h1{font-family:'Playfair Display',serif;font-size:34px;font-weight:700;letter-spacing:-.02em;line-height:1.2;margin-bottom:11px}
 .wl-h1 em{font-style:italic;font-weight:400;background:linear-gradient(90deg,var(--rose),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.wl-desc{color:var(--fg2);font-size:14px;font-weight:300;max-width:320px;line-height:1.75;margin-bottom:32px}
-.chips{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;max-width:480px}
-.chip{padding:7px 16px;border:1px solid var(--rim);border-radius:100px;background:rgba(255,255,255,.025);font-size:12px;color:var(--fg2);cursor:pointer;transition:all .2s;font-family:'Sora',sans-serif}
+.wl-desc{color:var(--fg2);font-size:13px;font-weight:300;max-width:320px;line-height:1.75;margin-bottom:28px}
+.chips{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;max-width:460px}
+.chip{padding:6px 15px;border:1px solid var(--rim);border-radius:100px;background:rgba(255,255,255,.025);font-size:12px;color:var(--fg2);cursor:pointer;transition:all .2s;font-family:'Sora',sans-serif}
 .chip:hover{border-color:var(--rose);color:var(--fg);background:var(--rose-g);transform:translateY(-1px)}
 
-/* ═══ BUBBLES ═══════════════════════════════════════ */
-.row{display:flex;gap:11px;align-items:flex-start;animation:up .32s cubic-bezier(.22,1,.36,1) both;opacity:0}
+/* BUBBLES */
+.row{display:flex;gap:10px;align-items:flex-start;animation:up .3s cubic-bezier(.22,1,.36,1) both;opacity:0}
 .row.user{flex-direction:row-reverse}
-.av{width:32px;height:32px;border-radius:9px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;margin-top:2px}
-.av.ai{background:linear-gradient(135deg,var(--rose),var(--violet));box-shadow:0 0 14px var(--rose-glow)}
+.av{width:30px;height:30px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;margin-top:2px}
+.av.ai{background:linear-gradient(135deg,var(--rose),var(--violet));box-shadow:0 0 12px var(--rose-glow)}
 .av.user{background:var(--ink3);border:1px solid var(--rim);font-size:11px;color:var(--fg2);font-weight:500}
-.col{max-width:calc(100% - 44px)}
+.col{max-width:calc(100% - 42px)}
 .row.user .col{display:flex;flex-direction:column;align-items:flex-end}
-.bub{padding:12px 17px;border-radius:16px;font-size:13.5px;line-height:1.75;word-break:break-word}
+.bub{padding:11px 16px;border-radius:15px;font-size:13.5px;line-height:1.75;word-break:break-word}
 .bub.ai{background:var(--ink2);border:1px solid var(--rim);border-top-left-radius:3px}
-.bub.user{background:linear-gradient(135deg,rgba(255,77,109,.16),rgba(167,139,250,.1));border:1px solid rgba(255,77,109,.22);border-top-right-radius:3px}
+.bub.user{background:linear-gradient(135deg,rgba(255,77,109,.15),rgba(167,139,250,.09));border:1px solid rgba(255,77,109,.2);border-top-right-radius:3px}
 .bub strong{color:var(--gold);font-weight:500}
 .bub em{font-style:italic;color:var(--fg2)}
-.bub code{font-family:'Fira Code','Cascadia Code',monospace;font-size:12px;background:rgba(255,255,255,.07);color:var(--violet);padding:1px 6px;border-radius:4px}
-.bub br{display:block;margin:2px 0}
+.bub code{font-family:'Fira Code',monospace;font-size:12px;background:rgba(255,255,255,.07);color:var(--violet);padding:1px 6px;border-radius:4px}
+
+/* File bubble */
+.file-bubble{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 14px;border-radius:12px;
+  background:var(--ink3);border:1px solid rgba(74,222,128,.2);
+  margin-bottom:6px;max-width:280px;
+}
+.file-icon{font-size:20px;flex-shrink:0}
+.file-info{min-width:0}
+.file-name{font-size:12px;font-weight:500;color:var(--green);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:180px}
+.file-size{font-size:10px;color:var(--fg3);margin-top:1px}
+
 .meta{margin-top:5px;font-size:10px;color:var(--fg3);letter-spacing:.03em}
 .row.user .meta{text-align:right}
 
-/* ═══ TYPING ════════════════════════════════════════ */
-.typing-row{display:flex;gap:11px;align-items:center;animation:up .28s cubic-bezier(.22,1,.36,1) both;opacity:0}
-.typing-bub{padding:13px 17px;background:var(--ink2);border:1px solid var(--rim);border-radius:16px;border-top-left-radius:3px;display:flex;gap:4px;align-items:center}
+/* TYPING */
+.typing-row{display:flex;gap:10px;align-items:center;animation:up .28s cubic-bezier(.22,1,.36,1) both;opacity:0}
+.typing-bub{padding:12px 16px;background:var(--ink2);border:1px solid var(--rim);border-radius:15px;border-top-left-radius:3px;display:flex;gap:4px;align-items:center}
 .td{width:6px;height:6px;border-radius:50%;background:var(--fg3);animation:bounce 1.4s ease-in-out infinite}
 .td:nth-child(2){animation-delay:.18s}.td:nth-child(3){animation-delay:.36s}
 @keyframes bounce{0%,80%,100%{transform:translateY(0);opacity:.4}40%{transform:translateY(-6px);opacity:1}}
 
-/* ═══ INPUT ZONE ════════════════════════════════════ */
-#foot{
-  flex-shrink:0;
-  padding:14px 24px 20px;
-  border-top:1px solid var(--rim);
-  background:rgba(11,11,18,.78);
-  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+/* INPUT ZONE */
+#foot{flex-shrink:0;padding:12px 22px 18px;border-top:1px solid var(--rim);background:rgba(11,11,18,.8);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+
+/* File preview bar */
+#filePreview{
+  display:none;align-items:center;gap:10px;
+  padding:8px 12px;margin-bottom:8px;
+  background:var(--ink2);border:1px solid rgba(74,222,128,.25);
+  border-radius:12px;
 }
-.box{
-  display:flex;align-items:flex-end;gap:9px;
-  background:var(--ink2);border:1px solid var(--rim);border-radius:18px;
-  padding:10px 10px 10px 17px;
-  transition:border-color .25s,box-shadow .25s;
+.fp-icon{font-size:18px}
+.fp-name{flex:1;font-size:12px;color:var(--green);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fp-size{font-size:11px;color:var(--fg3);flex-shrink:0}
+.fp-remove{background:none;border:none;cursor:pointer;color:var(--fg3);font-size:16px;padding:0 2px;transition:color .2s;line-height:1}
+.fp-remove:hover{color:var(--rose)}
+
+/* Processing bar */
+#procBar{
+  display:none;align-items:center;gap:8px;
+  padding:6px 12px;margin-bottom:8px;
+  background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.2);
+  border-radius:10px;font-size:12px;color:var(--violet);
 }
-.box:focus-within{border-color:rgba(255,77,109,.38);box-shadow:0 0 0 3px rgba(255,77,109,.07),0 0 22px rgba(255,77,109,.07)}
-textarea{
-  flex:1;background:transparent;border:none;outline:none;resize:none;
-  color:var(--fg);font-family:'Sora',sans-serif;font-size:13.5px;
-  line-height:1.6;max-height:150px;overflow-y:auto;padding:2px 0;
-}
+.proc-spin{width:14px;height:14px;border:2px solid rgba(167,139,250,.3);border-top-color:var(--violet);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
+
+.box{display:flex;align-items:flex-end;gap:8px;background:var(--ink2);border:1px solid var(--rim);border-radius:17px;padding:9px 9px 9px 16px;transition:border-color .25s,box-shadow .25s}
+.box:focus-within{border-color:rgba(255,77,109,.38);box-shadow:0 0 0 3px rgba(255,77,109,.07)}
+textarea{flex:1;background:transparent;border:none;outline:none;resize:none;color:var(--fg);font-family:'Sora',sans-serif;font-size:13.5px;line-height:1.6;max-height:140px;overflow-y:auto;padding:2px 0}
 textarea::placeholder{color:var(--fg3);font-weight:300}
-textarea::-webkit-scrollbar{width:3px}
-textarea::-webkit-scrollbar-thumb{background:var(--rim)}
-.send{
-  width:38px;height:38px;flex-shrink:0;
-  border:none;cursor:pointer;border-radius:11px;
-  background:linear-gradient(135deg,var(--rose) 0%,#c73358 100%);
+
+.attach-btn{
+  width:36px;height:36px;flex-shrink:0;
+  border:1px solid var(--rim);cursor:pointer;border-radius:10px;
+  background:transparent;display:flex;align-items:center;justify-content:center;
+  transition:all .2s;color:var(--fg3);font-size:17px;
+}
+.attach-btn:hover{border-color:rgba(167,139,250,.4);color:var(--violet);background:var(--violet-g)}
+.send-btn{
+  width:36px;height:36px;flex-shrink:0;
+  border:none;cursor:pointer;border-radius:10px;
+  background:linear-gradient(135deg,var(--rose),#c73358);
   display:flex;align-items:center;justify-content:center;
   transition:transform .15s,box-shadow .2s,opacity .2s;
   box-shadow:0 4px 14px var(--rose-glow);
 }
-.send:hover:not(:disabled){transform:scale(1.06);box-shadow:0 6px 20px rgba(255,77,109,.45)}
-.send:active:not(:disabled){transform:scale(.94)}
-.send:disabled{opacity:.3;cursor:not-allowed;box-shadow:none}
-.send svg{width:16px;height:16px;fill:#fff}
-.foot-info{margin-top:8px;display:flex;justify-content:space-between;align-items:center;padding:0 3px;font-size:10px;color:var(--fg3)}
+.send-btn:hover:not(:disabled){transform:scale(1.06);box-shadow:0 6px 20px rgba(255,77,109,.45)}
+.send-btn:active:not(:disabled){transform:scale(.94)}
+.send-btn:disabled{opacity:.3;cursor:not-allowed;box-shadow:none}
+.send-btn svg{width:15px;height:15px;fill:#fff}
 
-/* ═══ LOADING SPINNER ═══════════════════════════════ */
-.spinner-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:32px;color:var(--fg3);font-size:12px;animation:up .3s both}
-.spinner{width:24px;height:24px;border:2px solid var(--rim);border-top-color:var(--rose);border-radius:50%;animation:spin .8s linear infinite}
+.foot-info{margin-top:7px;display:flex;justify-content:space-between;align-items:center;padding:0 3px;font-size:10px;color:var(--fg3)}
 
-@media(max-width:580px){
-  #header{padding:12px 16px}
-  #msgs{padding:20px 16px}
-  #foot{padding:12px 16px 18px}
-  .wl-h1{font-size:30px}
+/* SPINNER */
+.spin-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:32px;color:var(--fg3);font-size:12px;animation:up .3s both}
+.spinner{width:22px;height:22px;border:2px solid var(--rim);border-top-color:var(--rose);border-radius:50%;animation:spin .8s linear infinite}
+
+/* Hidden file input */
+#fileInput{display:none}
+
+@media(max-width:560px){
+  #hdr{padding:11px 15px}
+  #msgs{padding:18px 15px}
+  #foot{padding:10px 15px 16px}
+  .wl-h1{font-size:27px}
 }
 </style>
 </head>
 <body>
 
 <div id="bg">
-  <div class="orb o1"></div>
-  <div class="orb o2"></div>
-  <div class="orb o3"></div>
-  <div class="grid"></div>
-  <div class="vignette"></div>
+  <div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
+  <div class="grid"></div><div class="vignette"></div>
 </div>
 
 <div id="app">
-
-  <div id="header">
-    <div class="logo-wrap">
-      <div class="logo-spin"></div>
-      <div class="logo-face">🔥</div>
-    </div>
-    <div class="hd-text">
+  <!-- HEADER -->
+  <div id="hdr">
+    <div class="logo-wrap"><div class="logo-spin"></div><div class="logo-face">🔥</div></div>
+    <div>
       <div class="hd-name">RzOffc AI</div>
       <div class="hd-sub">Powered by Milo-AI · by RzOffc</div>
     </div>
@@ -202,42 +193,61 @@ textarea::-webkit-scrollbar-thumb{background:var(--rim)}
     </div>
   </div>
 
+  <!-- MESSAGES -->
   <div id="msgs">
     <div id="welcome">
-      <div class="wl-icon">
-        <div class="wl-ring"></div>
-        <div class="wl-face">🔥</div>
-      </div>
+      <div class="wl-icon"><div class="wl-ring"></div><div class="wl-face">🔥</div></div>
       <h1 class="wl-h1">Halo, aku <em>RzOffc AI</em></h1>
-      <p class="wl-desc">Asisten cerdas dengan memori permanen — aku ingat setiap percakapan kita.</p>
-      <div class="chips" id="chipWrap">
+      <p class="wl-desc">Kirim pesan atau <strong style="color:var(--violet)">upload file</strong> — aku baca, ingat, dan bantu kamu.</p>
+      <div class="chips">
         <div class="chip" onclick="useChip(this)">Siapa kamu?</div>
         <div class="chip" onclick="useChip(this)">Buatkan kode Python</div>
         <div class="chip" onclick="useChip(this)">Jelaskan konsep AI</div>
         <div class="chip" onclick="useChip(this)">Buat cerita pendek</div>
-        <div class="chip" onclick="useChip(this)">Tips produktivitas</div>
+        <div class="chip" onclick="useChip(this)">Analisis file ini</div>
         <div class="chip" onclick="useChip(this)">Terjemahkan teks</div>
       </div>
     </div>
   </div>
 
+  <!-- INPUT -->
   <div id="foot">
+    <!-- File preview -->
+    <div id="filePreview">
+      <span class="fp-icon" id="fpIcon">📄</span>
+      <span class="fp-name" id="fpName"></span>
+      <span class="fp-size" id="fpSize"></span>
+      <button class="fp-remove" onclick="removeFile()" title="Hapus file">✕</button>
+    </div>
+    <!-- Processing bar -->
+    <div id="procBar">
+      <div class="proc-spin"></div>
+      <span id="procText">Membaca file...</span>
+    </div>
     <div class="box">
-      <textarea id="inp" rows="1" maxlength="2000" placeholder="Ketik pesanmu di sini…"></textarea>
-      <button class="send" id="sendBtn" onclick="send()">
+      <input type="file" id="fileInput" onchange="handleFile(this)" accept="*/*"/>
+      <button class="attach-btn" onclick="document.getElementById('fileInput').click()" title="Lampirkan file">📎</button>
+      <textarea id="inp" rows="1" maxlength="2000" placeholder="Ketik pesan atau lampirkan file…"></textarea>
+      <button class="send-btn" id="sendBtn" onclick="send()">
         <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
       </button>
     </div>
     <div class="foot-info">
-      <span>↵ Kirim &nbsp;·&nbsp; ⇧↵ Baris baru</span>
-      <span id="cc">0 / 2000</span>
+      <span>📎 Lampir file &nbsp;·&nbsp; ↵ Kirim &nbsp;·&nbsp; ⇧↵ Baris baru</span>
+      <span id="cc">0/2000</span>
     </div>
   </div>
-
 </div>
 
+<!-- PDF.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script>
-/* ── state ─────────────────────────────────────────── */
+if (typeof pdfjsLib !== 'undefined') {
+  pdfjsLib.GlobalWorkerOptions.workerSrc =
+    'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+}
+
+/* ── STATE ─────────────────────────────────────── */
 const msgsEl   = document.getElementById('msgs');
 const inpEl    = document.getElementById('inp');
 const btnEl    = document.getElementById('sendBtn');
@@ -245,61 +255,207 @@ const ccEl     = document.getElementById('cc');
 const memBadge = document.getElementById('memBadge');
 const memNum   = document.getElementById('memNum');
 const resetBtn = document.getElementById('resetBtn');
-let welcomeEl  = document.getElementById('welcome');
-let busy       = false;
-let SESSION    = 'default';
+const fpBar    = document.getElementById('filePreview');
+const fpIcon   = document.getElementById('fpIcon');
+const fpName   = document.getElementById('fpName');
+const fpSize   = document.getElementById('fpSize');
+const procBar  = document.getElementById('procBar');
+const procText = document.getElementById('procText');
 
-/* ── helpers ───────────────────────────────────────── */
-function hhmmss() {
-  return new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+let welcomeEl = document.getElementById('welcome');
+let busy      = false;
+let SESSION   = 'default';
+
+// Attached file state
+let attachedFile = null; // { name, content, size, icon }
+
+/* ── HELPERS ───────────────────────────────────── */
+function hhmm() {
+  return new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'});
 }
-
+function fmtSize(bytes) {
+  if (bytes < 1024) return bytes + ' B';
+  if (bytes < 1024*1024) return (bytes/1024).toFixed(1) + ' KB';
+  return (bytes/(1024*1024)).toFixed(1) + ' MB';
+}
+function fileIcon(name) {
+  const ext = name.split('.').pop().toLowerCase();
+  const map = {
+    pdf:'📕', jpg:'🖼️', jpeg:'🖼️', png:'🖼️', gif:'🖼️', webp:'🖼️', svg:'🖼️',
+    mp3:'🎵', mp4:'🎬', wav:'🎵', avi:'🎬', mov:'🎬',
+    zip:'🗜️', rar:'🗜️', '7z':'🗜️',
+    js:'💻', ts:'💻', py:'🐍', html:'🌐', css:'🎨', json:'📋',
+    md:'📝', txt:'📄', docx:'📘', xlsx:'📗', pptx:'📙',
+    csv:'📊',
+  };
+  return map[ext] || '📄';
+}
 function md(t) {
   return t
-    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-    .replace(/\*(.*?)\*/g,     '<em>$1</em>')
-    .replace(/`([^`\n]+)`/g,   '<code>$1</code>')
-    .replace(/\n/g,            '<br>');
+    .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g,'<em>$1</em>')
+    .replace(/`([^`\n]+)`/g,'<code>$1</code>')
+    .replace(/\n/g,'<br>');
 }
-
 function setMemUI(n) {
   if (n > 0) {
-    memNum.textContent   = n;
+    memNum.textContent = n;
     memBadge.style.display = 'flex';
-    resetBtn.style.display = 'flex';
+    resetBtn.style.display  = 'flex';
   } else {
     memBadge.style.display = 'none';
-    resetBtn.style.display = 'none';
+    resetBtn.style.display  = 'none';
+  }
+}
+function scrollEnd() { msgsEl.scrollTo({top:msgsEl.scrollHeight,behavior:'smooth'}); }
+function killWelcome() { if (welcomeEl){welcomeEl.remove();welcomeEl=null;} }
+
+/* ── FILE HANDLING ─────────────────────────────── */
+async function handleFile(input) {
+  const file = input.files[0];
+  if (!file) return;
+  input.value = ''; // reset so same file can be re-selected
+
+  const MAX_SIZE = 15 * 1024 * 1024; // 15MB limit
+  if (file.size > MAX_SIZE) {
+    alert('File terlalu besar! Maksimal 15MB.');
+    return;
+  }
+
+  procBar.style.display = 'flex';
+  procText.textContent  = 'Membaca file…';
+
+  try {
+    const content = await readFile(file);
+    attachedFile  = { name: file.name, content, size: file.size, icon: fileIcon(file.name) };
+
+    fpIcon.textContent  = attachedFile.icon;
+    fpName.textContent  = file.name;
+    fpSize.textContent  = fmtSize(file.size);
+    fpBar.style.display = 'flex';
+    inpEl.placeholder   = 'Tanya sesuatu tentang file ini…';
+    inpEl.focus();
+  } catch (err) {
+    alert('Gagal membaca file: ' + err.message);
+  } finally {
+    procBar.style.display = 'none';
   }
 }
 
-function scrollEnd() {
-  msgsEl.scrollTo({ top: msgsEl.scrollHeight, behavior: 'smooth' });
+async function readFile(file) {
+  const ext  = file.name.split('.').pop().toLowerCase();
+  const name = file.name.toLowerCase();
+
+  // PDF → ekstrak teks via PDF.js
+  if (ext === 'pdf') {
+    return await readPDF(file);
+  }
+
+  // Gambar → base64 + metadata
+  if (['jpg','jpeg','png','gif','webp','bmp','svg'].includes(ext)) {
+    return await readImage(file);
+  }
+
+  // Teks / kode / data
+  const textTypes = [
+    'txt','md','csv','json','xml','html','htm','css','js','ts','jsx','tsx',
+    'py','java','c','cpp','h','cs','php','rb','go','rs','swift','kt',
+    'sh','bash','yaml','yml','toml','ini','cfg','log','sql','graphql',
+    'vue','svelte','env','gitignore','dockerfile','makefile'
+  ];
+  if (textTypes.includes(ext) || file.type.startsWith('text/')) {
+    return await readText(file);
+  }
+
+  // DOCX — baca sebagai teks
+  if (ext === 'docx' || ext === 'odt') {
+    return await readText(file).catch(() => '[File DOCX tidak bisa dibaca sebagai teks biasa]');
+  }
+
+  // File biner lain → info saja
+  return `[File: ${file.name} | Tipe: ${file.type || 'unknown'} | Ukuran: ${fmtSize(file.size)}]\nFile ini berformat biner dan tidak bisa dibaca sebagai teks.`;
 }
 
-/* ── remove welcome screen ─────────────────────────── */
-function killWelcome() {
-  if (welcomeEl) { welcomeEl.remove(); welcomeEl = null; }
+function readText(file) {
+  return new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onload  = e => resolve(e.target.result);
+    r.onerror = () => reject(new Error('Gagal membaca teks'));
+    r.readAsText(file, 'UTF-8');
+  });
 }
 
-/* ── append message bubble ─────────────────────────── */
-function appendMsg(role, text) {
+async function readPDF(file) {
+  if (typeof pdfjsLib === 'undefined') {
+    throw new Error('PDF.js belum siap, coba lagi sebentar');
+  }
+  procText.textContent = 'Mengekstrak teks PDF…';
+  const buf  = await file.arrayBuffer();
+  const pdf  = await pdfjsLib.getDocument({ data: buf }).promise;
+  let text   = `[PDF: ${file.name} | ${pdf.numPages} halaman]\n\n`;
+  for (let i = 1; i <= Math.min(pdf.numPages, 30); i++) {
+    procText.textContent = `Membaca halaman ${i}/${pdf.numPages}…`;
+    const page    = await pdf.getPage(i);
+    const content = await page.getTextContent();
+    const pgText  = content.items.map(s => s.str).join(' ').trim();
+    if (pgText) text += `--- Halaman ${i} ---\n${pgText}\n\n`;
+  }
+  if (pdf.numPages > 30) text += `\n[...dan ${pdf.numPages - 30} halaman lagi tidak ditampilkan]`;
+  return text;
+}
+
+async function readImage(file) {
+  return new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = e => {
+      const b64  = e.target.result; // data:image/...;base64,...
+      const info =
+        `[Gambar: ${file.name} | Tipe: ${file.type} | Ukuran: ${fmtSize(file.size)}]\n` +
+        `Ini adalah file gambar yang diupload oleh user. ` +
+        `Deskripsikan bahwa kamu menerima gambar dengan nama "${file.name}" ` +
+        `dan bantu user sesuai konteks pertanyaannya tentang gambar ini.\n` +
+        `Data base64 (untuk referensi): ${b64.slice(0, 200)}...`;
+      resolve(info);
+    };
+    r.onerror = () => reject(new Error('Gagal membaca gambar'));
+    r.readAsDataURL(file);
+  });
+}
+
+function removeFile() {
+  attachedFile        = null;
+  fpBar.style.display = 'none';
+  inpEl.placeholder   = 'Ketik pesan atau lampirkan file…';
+  inpEl.focus();
+}
+
+/* ── APPEND MESSAGE ────────────────────────────── */
+function appendMsg(role, text, fileInfo) {
   killWelcome();
-  const row  = document.createElement('div');
+  const row = document.createElement('div');
   row.className = 'row ' + role;
 
   const av = document.createElement('div');
-  av.className = 'av ' + role;
+  av.className  = 'av ' + role;
   av.textContent = role === 'ai' ? '🔥' : 'Rz';
 
   const col  = document.createElement('div'); col.className = 'col';
+
+  // File bubble (kalau ada)
+  if (fileInfo) {
+    const fb = document.createElement('div'); fb.className = 'file-bubble';
+    fb.innerHTML =
+      `<span class="file-icon">${fileInfo.icon}</span>` +
+      `<div class="file-info"><div class="file-name">${fileInfo.name}</div>` +
+      `<div class="file-size">${fmtSize(fileInfo.size)}</div></div>`;
+    col.appendChild(fb);
+  }
+
   const bub  = document.createElement('div'); bub.className = 'bub ' + role;
   bub.innerHTML = md(text);
 
   const meta = document.createElement('div'); meta.className = 'meta';
-  meta.textContent = role === 'ai'
-    ? 'RzOffc AI · ' + hhmmss()
-    : 'Kamu · '     + hhmmss();
+  meta.textContent = role === 'ai' ? 'RzOffc AI · ' + hhmm() : 'Kamu · ' + hhmm();
 
   col.appendChild(bub); col.appendChild(meta);
   row.appendChild(av);  row.appendChild(col);
@@ -307,7 +463,7 @@ function appendMsg(role, text) {
   scrollEnd();
 }
 
-/* ── typing indicator ──────────────────────────────── */
+/* ── TYPING ────────────────────────────────────── */
 function showTyping() {
   const row = document.createElement('div');
   row.id = 'typing'; row.className = 'typing-row';
@@ -317,98 +473,77 @@ function showTyping() {
   row.appendChild(av); row.appendChild(bub);
   msgsEl.appendChild(row); scrollEnd();
 }
-function hideTyping() {
-  const el = document.getElementById('typing');
-  if (el) el.remove();
-}
+function hideTyping() { const e=document.getElementById('typing'); if(e)e.remove(); }
 
-/* ── rebuild welcome screen ────────────────────────── */
+/* ── WELCOME REBUILD ───────────────────────────── */
 function buildWelcome() {
-  const d = document.createElement('div');
-  d.id = 'welcome';
+  const d = document.createElement('div'); d.id = 'welcome';
   d.innerHTML = `
     <div class="wl-icon"><div class="wl-ring"></div><div class="wl-face">🔥</div></div>
     <h1 class="wl-h1">Halo, aku <em>RzOffc AI</em></h1>
-    <p class="wl-desc">Asisten cerdas dengan memori permanen — aku ingat setiap percakapan kita.</p>
-    <div class="chips" id="chipWrap">
+    <p class="wl-desc">Kirim pesan atau <strong style="color:var(--violet)">upload file</strong> — aku baca, ingat, dan bantu kamu.</p>
+    <div class="chips">
       <div class="chip" onclick="useChip(this)">Siapa kamu?</div>
       <div class="chip" onclick="useChip(this)">Buatkan kode Python</div>
       <div class="chip" onclick="useChip(this)">Jelaskan konsep AI</div>
       <div class="chip" onclick="useChip(this)">Buat cerita pendek</div>
-      <div class="chip" onclick="useChip(this)">Tips produktivitas</div>
+      <div class="chip" onclick="useChip(this)">Analisis file ini</div>
       <div class="chip" onclick="useChip(this)">Terjemahkan teks</div>
     </div>`;
   return d;
 }
 
-/* ── load history from API ─────────────────────────── */
-async function loadHistory() {
-  const spin = document.createElement('div');
-  spin.className = 'spinner-wrap';
-  spin.innerHTML = '<div class="spinner"></div><span>Memuat riwayat…</span>';
-  msgsEl.innerHTML = '';
-  msgsEl.appendChild(spin);
-
-  try {
-    const r = await fetch('/api/chat?session=' + encodeURIComponent(SESSION));
-    const d = await r.json();
-    msgsEl.innerHTML = '';
-
-    if (d.ok && d.history && d.history.length > 0) {
-      d.history.forEach(m => appendMsg(m.role, m.text));
-      setMemUI(d.history.length);
-    } else {
-      welcomeEl = buildWelcome();
-      msgsEl.appendChild(welcomeEl);
-      setMemUI(0);
-    }
-  } catch {
-    msgsEl.innerHTML = '';
-    welcomeEl = buildWelcome();
-    msgsEl.appendChild(welcomeEl);
-    setMemUI(0);
-  }
-}
-
-/* ── reset chat ────────────────────────────────────── */
+/* ── RESET ─────────────────────────────────────── */
 async function resetChat() {
-  if (!confirm('Hapus semua riwayat? AI akan lupa percakapan ini.')) return;
-  try {
-    await fetch('/api/chat?session=' + encodeURIComponent(SESSION), { method: 'DELETE' });
-  } catch {}
+  if (!confirm('Hapus semua riwayat & file? AI akan lupa percakapan ini.')) return;
+  try { await fetch('/api/chat?session='+encodeURIComponent(SESSION),{method:'DELETE'}); } catch {}
   msgsEl.innerHTML = '';
   welcomeEl = buildWelcome();
   msgsEl.appendChild(welcomeEl);
   setMemUI(0);
+  removeFile();
 }
 
-/* ── chip ──────────────────────────────────────────── */
+/* ── CHIP ──────────────────────────────────────── */
 function useChip(el) {
   inpEl.value = el.textContent;
   inpEl.dispatchEvent(new Event('input'));
   send();
 }
 
-/* ── send ──────────────────────────────────────────── */
+/* ── SEND ──────────────────────────────────────── */
 async function send() {
   if (busy) return;
   const txt = inpEl.value.trim();
-  if (!txt) return;
+  if (!txt && !attachedFile) return;
+
+  const displayText = txt || (attachedFile ? 'Tolong analisis file ini.' : '');
+  const fileSnap    = attachedFile;
 
   busy = true;
   btnEl.disabled = true;
   inpEl.value = '';
   inpEl.style.height = 'auto';
-  ccEl.textContent = '0 / 2000';
+  ccEl.textContent = '0/2000';
+  removeFile();
 
-  appendMsg('user', txt);
+  appendMsg('user', displayText, fileSnap);
   showTyping();
 
   try {
+    const body = {
+      message:  displayText,
+      session:  SESSION,
+    };
+    if (fileSnap) {
+      body.fileContent = fileSnap.content;
+      body.fileName    = fileSnap.name;
+    }
+
     const r = await fetch('/api/chat', {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify({ message: txt, session: SESSION })
+      body:    JSON.stringify(body)
     });
     const d = await r.json();
     hideTyping();
@@ -417,11 +552,11 @@ async function send() {
       appendMsg('ai', d.reply);
       setMemUI(d.count);
     } else {
-      appendMsg('ai', '⚡ Terjadi kesalahan. Coba lagi ya!');
+      appendMsg('ai', '⚡ Terjadi kesalahan: ' + (d.error || 'coba lagi'));
     }
   } catch {
     hideTyping();
-    appendMsg('ai', '🌐 Gagal terhubung ke server. Cek koneksimu.');
+    appendMsg('ai', '🌐 Gagal terhubung ke server.');
   } finally {
     busy = false;
     btnEl.disabled = false;
@@ -429,19 +564,15 @@ async function send() {
   }
 }
 
-/* ── textarea auto-resize ──────────────────────────── */
+/* ── INPUT RESIZE ──────────────────────────────── */
 inpEl.addEventListener('input', () => {
   inpEl.style.height = 'auto';
-  inpEl.style.height = Math.min(inpEl.scrollHeight, 150) + 'px';
-  ccEl.textContent = inpEl.value.length + ' / 2000';
+  inpEl.style.height = Math.min(inpEl.scrollHeight, 140) + 'px';
+  ccEl.textContent = inpEl.value.length + '/2000';
 });
 inpEl.addEventListener('keydown', e => {
   if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); }
 });
-
-/* ── on load: just show welcome (no API call yet) ───── */
-// History akan dimuat pertama kali user mengirim pesan atau bisa uncomment baris ini:
-// loadHistory();
 </script>
 </body>
 </html>
