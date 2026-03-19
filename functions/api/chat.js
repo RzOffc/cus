@@ -1,6 +1,6 @@
 const MILO_API   = 'https://api-miloai.vercel.app/api/aijahat';
 const MILO_TOKEN = 'MILO-AI-BLACKS3X';
-const MAX_CTX    = 50;
+const MAX_CTX    = 20;
 
 function cors(res) {
   res.headers.set('Access-Control-Allow-Origin',  '*');
